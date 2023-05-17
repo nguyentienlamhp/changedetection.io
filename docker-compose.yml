@@ -6,6 +6,8 @@ services:
       hostname: changedetection
       volumes:
         - changedetection-data:/datastore
+      environment:
+        - API_UPDATE_STATUS=https://svc.mitc.vn/data/module4/updateStatusRunning?type=1
 # Configurable proxy list support, see https://github.com/dgtlmoon/changedetection.io/wiki/Proxy-configuration#proxy-list-support
 #        - ./proxies.json:/datastore/proxies.json
 
@@ -98,6 +100,6 @@ services:
 #             Ignore HTTPS errors, like for self-signed certs
 #            - DEFAULT_IGNORE_HTTPS_ERRORS=true
 #
-volumes:
-  changedetection-data:
+#volumes:
+#  changedetection-data:
 

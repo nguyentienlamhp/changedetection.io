@@ -20,6 +20,8 @@ import threading
 import time
 import timeago
 
+import requests
+
 from flask import (
     Flask,
     abort,
@@ -1230,7 +1232,15 @@ def changedetection_app(config=None, datastore_o=None):
         tag = request.args.get('tag')
         uuid = request.args.get('uuid')
         i = 0
-
+        #update trang thai dang quet
+        if os.getenv("API_UPDATE_STATUS"):
+            headers = {'content-type': 'application/json'}
+            #payload = {"domain":url,"type": 4, "imagePath": imagePath, "deface": deface,"message": message, "id_deaface_map": id_domain}
+            endpoint = os.getenv("API_UPDATE_STATUS")
+            r = requests.post(endpoint+"&id="+uuid, headers=headers)
+            print("API_UPDATE_STATUS: " + r.status_code)
+            print(r.reason)
+            
         running_uuids = []
         for t in running_update_threads:
             running_uuids.append(t.current_uuid)
@@ -1308,6 +1318,14 @@ def changedetection_app(config=None, datastore_o=None):
         elif (op == 'recheck'):
             for uuid in uuids:
                 uuid = uuid.strip()
+                #update trang thai dang quet
+                if os.getenv("API_UPDATE_STATUS"):
+                    headers = {'content-type': 'application/json'}
+                    #payload = {"domain":url,"type": 4, "imagePath": imagePath, "deface": deface,"message": message, "id_deaface_map": id_domain}
+                    endpoint = os.getenv("API_UPDATE_STATUS")
+                    r = requests.post(endpoint+"&id="+uuid, headers=headers)
+                    print("API_UPDATE_STATUS: " + r.status_code)
+                    print(r.reason)
                 if datastore.data['watching'].get(uuid):
                     # Recheck and require a full reprocessing
                     update_q.put(queuedWatchMetaData.PrioritizedItem(priority=1, item={'uuid': uuid, 'skip_when_checksum_same': False}))
