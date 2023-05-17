@@ -8,6 +8,9 @@ services:
         - changedetection-data:/datastore
       environment:
         - API_UPDATE_STATUS=https://svc.mitc.vn/data/module4/updateStatusRunning?type=1
+        - PORT=5500
+        - BASE_URL=http://192.168.10.48:5500
+
 # Configurable proxy list support, see https://github.com/dgtlmoon/changedetection.io/wiki/Proxy-configuration#proxy-list-support
 #        - ./proxies.json:/datastore/proxies.json
 
@@ -52,7 +55,7 @@ services:
 
       # Comment out ports: when using behind a reverse proxy , enable networks: etc.
       ports:
-        - 5000:5000
+        - 5500:5000
       restart: unless-stopped
 
      # Used for fetching pages via WebDriver+Chrome where you need Javascript support.
